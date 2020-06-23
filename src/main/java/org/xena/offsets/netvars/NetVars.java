@@ -43,7 +43,7 @@ public final class NetVars {
 	private static final RecvProp prop = new RecvProp();
 	
 	public static void load() {
-		int firstclass = PatternScanner.byPattern(OffsetManager.clientModule(), 0, 0, 0, "DT_TEWorldDecal");
+		/*int firstclass = PatternScanner.byPattern(OffsetManager.clientModule(), 0, 0, 0, "DT_TEWorldDecal");
 		firstclass = PatternScanner.byPattern(OffsetManager.clientModule(), 0x2B, 0, PatternScanner.READ, firstclass);
 		
 		for (clientClass.setBase(firstclass); clientClass.readable(); clientClass.setBase(clientClass.next())) {
@@ -52,7 +52,7 @@ public final class NetVars {
 			if (tableName.length() > 0 && table.propCount() > 0) {
 				scanTable(table, 0, tableName);
 			}
-		}
+		}*/
 	}
 	
 	public static void dump() {

@@ -16,14 +16,18 @@
 
 package org.xena.offsets;
 
+import com.github.jonatino.process.AbstractProcess;
 import com.github.jonatino.process.Module;
 import com.github.jonatino.process.Process;
 import com.github.jonatino.process.Processes;
+import com.github.jonatino.process.impl.win32.Win32Process;
 import com.sun.jna.Platform;
 import org.xena.offsets.netvars.NetVars;
 import org.xena.offsets.offsets.ClientOffsets;
 import org.xena.offsets.offsets.EngineOffsets;
 import org.xena.offsets.offsets.NetVarOffsets;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by Jonathan on 12/22/2015.
@@ -35,7 +39,7 @@ public final class OffsetManager {
 	
 	static {
 		StringBuilder procBaseName = new StringBuilder("csgo");
-		StringBuilder clientBaseName = new StringBuilder("client_panorama");
+		StringBuilder clientBaseName = new StringBuilder("panoramauiclient");
 		StringBuilder engineBaseName = new StringBuilder("engine");
 		
 		if (Platform.isWindows()) {
@@ -59,6 +63,18 @@ public final class OffsetManager {
 		String engineName = engineBaseName.toString();
 		
 		waitUntilFound("process", () -> (process = Processes.byName(processName)) != null);
+		Field field = null;
+		try {
+			field = AbstractProcess.class.getDeclaredField("modules");
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+		field.setAccessible(true);
+		try {
+			System.out.println(field.get(process));
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 		waitUntilFound("client module", () -> (clientModule = process.findModule(clientName)) != null);
 		waitUntilFound("engine module", () -> (engineModule = process.findModule(engineName)) != null);
 	}
